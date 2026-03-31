@@ -23,6 +23,36 @@ What it **does** do is remove you from the blast radius of the most common attac
 
 Think of it as one sensible player on the pitch, not the entire team.
 
+## "But I already use lockfiles"
+
+Lockfiles solve a different problem. A lockfile pins exact versions so every install is reproducible. That's essential. But a lockfile will happily pin a version that was published 3 minutes ago. It did its job — it's reproducible. It's reproducibly compromised.
+
+**The attack lockfiles don't stop:**
+
+```
+1. Developer runs: pip install cool-new-lib==1.0.0
+2. Lockfile updates: cool-new-lib==1.0.0  ← pinned, reproducible ✓
+3. PR merges, CI deploys
+4. 48 hours later: cool-new-lib is yanked as malware
+```
+
+The lockfile worked perfectly. It just pinned a poisoned version.
+
+The same happens with Dependabot and Renovate — they open a PR bumping to a version that was published hours ago, lockfile updates, tests pass, PR merges. Nobody asked how old that version was.
+
+**sup asks the question lockfiles can't:** "Has this version existed long enough for someone to have noticed if it were malicious?"
+
+They're complementary layers:
+
+```
+Lockfile:    WHAT version do I have?      → reproducibility
+sup:         HOW OLD is that version?     → temporal trust
+pip-audit:   IS that version vulnerable?  → known CVEs
+socket.dev:  IS that version malicious?   → malware detection
+```
+
+You want all of them. Lockfiles are the foundation. `sup` is the smoke detector.
+
 ## Two tiers
 
 | Tier | Default | Intended use |
