@@ -1,0 +1,7 @@
+# Python dependencies
+requests==2.31.0
+click==8.1.7
+numpy[extra]==1.26.0
+# comment line
+-e git+https://github.com/foo/bar.git
+rich==13.7.0

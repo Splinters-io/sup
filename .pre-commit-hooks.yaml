@@ -1,0 +1,12 @@
+- id: sup-check
+  name: sup quarantine check
+  description: Check dependencies against quarantine thresholds
+  entry: sup check
+  language: python
+  pass_filenames: false
+  always_run: false
+  files: >-
+    (requirements\.txt|pyproject\.toml|poetry\.lock|Pipfile\.lock|
+    package\.json|package-lock\.json|yarn\.lock|
+    go\.mod|Cargo\.toml|Cargo\.lock|Gemfile\.lock)$
+  additional_dependencies: ["sup-quarantine"]

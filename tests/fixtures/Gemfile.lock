@@ -1,0 +1,12 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    actioncable (7.1.0)
+    actionmailer (7.1.0)
+    rails (7.1.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  rails (~> 7.1)

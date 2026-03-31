@@ -1,0 +1,44 @@
+name: "sup quarantine check"
+description: "Check dependencies against supply chain quarantine thresholds"
+branding:
+  icon: "shield"
+  color: "blue"
+
+inputs:
+  tier:
+    description: "Quarantine tier: known (10d) or bleeding_edge (14d)"
+    required: false
+    default: "known"
+  warn-only:
+    description: "Warn but don't fail the build"
+    required: false
+    default: "false"
+  directory:
+    description: "Project directory to scan"
+    required: false
+    default: "."
+  version:
+    description: "sup-quarantine version to install"
+    required: false
+    default: "latest"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install sup
+      shell: bash
+      run: |
+        if [ "${{ inputs.version }}" = "latest" ]; then
+          pip install sup-quarantine
+        else
+          pip install "sup-quarantine==${{ inputs.version }}"
+        fi
+
+    - name: Run quarantine check
+      shell: bash
+      run: |
+        ARGS="--dir ${{ inputs.directory }} --tier ${{ inputs.tier }}"
+        if [ "${{ inputs.warn-only }}" = "true" ]; then
+          ARGS="$ARGS --warn-only"
+        fi
+        sup check $ARGS
